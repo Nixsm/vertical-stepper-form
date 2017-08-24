@@ -202,12 +202,8 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
 		TextView stepNumberTextView = (TextView) stepHeader.findViewById(R.id.step_number);
 		LinearLayout errorContainer = (LinearLayout) stepLayout.findViewById(R.id.error_container);
 		TextView errorTextView = (TextView) errorContainer.findViewById(R.id.error_message);
-		AppCompatButton nextButton = (AppCompatButton) stepLayout.findViewById(R.id.next_step);
 
 		enableStepHeader(stepLayout);
-
-		nextButton.setEnabled(true);
-		nextButton.setAlpha(1);
 
 		if (stepNumber != activeStep) {
 			stepDone.setVisibility(View.VISIBLE);
@@ -240,13 +236,9 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
 		RelativeLayout stepHeader = (RelativeLayout) stepLayout.findViewById(R.id.step_header);
 		ImageView stepDone = (ImageView) stepHeader.findViewById(R.id.step_done);
 		TextView stepNumberTextView = (TextView) stepHeader.findViewById(R.id.step_number);
-		AppCompatButton nextButton = (AppCompatButton) stepLayout.findViewById(R.id.next_step);
 
 		stepDone.setVisibility(View.INVISIBLE);
 		stepNumberTextView.setVisibility(View.VISIBLE);
-
-		nextButton.setEnabled(false);
-		nextButton.setAlpha(alphaOfDisabledElements);
 
 		if (stepNumber == activeStep) {
 			disableNextButtonInBottomNavigationLayout();
@@ -469,13 +461,6 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
 		stepLeftLine2.setVisibility(View.INVISIBLE);
 		stepLeftLine3.setVisibility(View.INVISIBLE);
 
-		AppCompatButton finalButton = (AppCompatButton) stepLayout.findViewById(R.id.next_step);
-		finalButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				prepareSendingAndSend();
-			}
-		});
 	}
 
 	protected LinearLayout createStepLayout(final int stepNumber) {
@@ -521,16 +506,6 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
 			@Override
 			public void onClick(View v) {
 				goToStep(stepNumber, false);
-			}
-		});
-
-		AppCompatButton nextButton = (AppCompatButton) stepLayout.findViewById(R.id.next_step);
-		setButtonColor(nextButton,
-				buttonBackgroundColor, buttonTextColor, buttonPressedBackgroundColor, buttonPressedTextColor);
-		nextButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				goToStep((stepNumber + 1), false);
 			}
 		});
 
@@ -877,6 +852,29 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
 			restoreFormState();
 		}
 		super.onRestoreInstanceState(state);
+	}
+
+	public void setStepConfirmationButton(final int stepNumber, View view) {
+		LinearLayout nextButtonLayout = (LinearLayout) stepLayouts.get(stepNumber).findViewById(R.id.next_step_layout);
+
+		if (stepNumber > numberOfSteps - 1) {
+			view.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					goToStep((stepNumber + 1), false);
+				}
+			});
+		} else {
+			view.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					prepareSendingAndSend();
+				}
+			});
+		}
+
+		nextButtonLayout.removeAllViews();
+		nextButtonLayout.addView(view);
 	}
 
 	public static class Builder {
