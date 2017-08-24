@@ -857,7 +857,7 @@ public class VerticalStepperFormLayout extends RelativeLayout implements View.On
 	public void setStepConfirmationButton(final int stepNumber, View view) {
 		LinearLayout nextButtonLayout = (LinearLayout) stepLayouts.get(stepNumber).findViewById(R.id.next_step_layout);
 
-		if (stepNumber > numberOfSteps - 1) {
+		if (stepNumber < numberOfSteps - 1) {
 			view.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
