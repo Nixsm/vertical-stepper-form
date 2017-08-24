@@ -159,6 +159,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/next_step_vertical_line"
             android:layout_width="@dimen/vertical_stepper_vertical_line_thickness"
             android:layout_height="match_parent"
             android:layout_marginEnd="26dp"
